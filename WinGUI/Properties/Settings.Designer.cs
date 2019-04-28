@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TrackKey.Properties
+namespace WinGUI.Properties
 {
 
 
