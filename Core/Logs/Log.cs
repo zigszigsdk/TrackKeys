@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Core.Logs
 {
@@ -18,5 +19,10 @@ namespace Core.Logs
                 ? new List<LogEntry>() { new LogEntry() }
                 : entries;
         }
+
+        public List<LogEntry> Search(Regex regex) =>
+            entries.FindAll(entry =>
+                entry.descriptions.FindIndex(description =>
+                    regex.IsMatch(description)) != -1);        
     }
 }

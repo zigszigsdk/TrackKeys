@@ -12,6 +12,7 @@ namespace Core.Expressions
 
         public override ExpressionResult Executes()
         {
+            List<LogEntry> matches = FindEntries(string.Join(" ", _parameters.GetRange(1, _parameters.Count-1).ToArray()));
             return new ExpressionResult();
         }
     }

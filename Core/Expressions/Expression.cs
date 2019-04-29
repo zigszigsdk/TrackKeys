@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 using Files;
 
@@ -11,11 +13,13 @@ namespace Core.Expressions
     {
         public ResultCode statusCode;
         public string description;
+        public Exception exception;
 
-        public ExpressionResult(ResultCode statusCode = ResultCode.OK, string description = "")
+        public ExpressionResult(ResultCode statusCode = ResultCode.OK, string description = "", Exception exception = null)
         {
             this.statusCode = statusCode;
             this.description = description;
+            this.exception = exception;
         }
     }
 
@@ -36,5 +40,26 @@ namespace Core.Expressions
 
         public abstract ExpressionResult Executes();
 
+        protected List<LogEntry> FindEntries(string regexString)
+        {
+            Regex regex;
+
+            try
+            {
+                regex = new Regex(regexString);
+            }
+            catch (Exception e)
+            {
+                return new List<LogEntry>();
+            }
+
+            return _log.value.Search(regex);
+        }
+
+        protected ExpressionResult RegexModification(string regex, Action<LogEntry> action)
+        {
+            FindEntries(regex).ForEach(action);
+            return new ExpressionResult();
+        }
     }
 }
